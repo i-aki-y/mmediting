@@ -21,6 +21,10 @@ model = dict(
         num_blocks=23,
         growth_channels=32,
         upscale_factor=scale),
+    ema_config=dict(
+        type='ExponentialMovingAverage',
+        momentum=0.001,
+        interval=1),
     pixel_loss=dict(type='L1Loss', loss_weight=1.0, reduction='mean'),
     is_use_sharpened_gt_in_pixel=True,
     is_use_ema=True,
@@ -255,10 +259,4 @@ visualizer = dict(
     bgr2rgb=False)
 custom_hooks = [
     dict(type='BasicVisualizationHook', interval=1),
-    dict(
-        type='ExponentialMovingAverageHook',
-        module_keys=('generator_ema'),
-        interval=1,
-        interp_cfg=dict(momentum=0.999),
-    )
 ]

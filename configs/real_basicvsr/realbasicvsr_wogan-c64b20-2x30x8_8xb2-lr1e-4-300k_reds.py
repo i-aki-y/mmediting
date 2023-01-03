@@ -19,6 +19,10 @@ model = dict(
         'basicvsr/spynet_20210409-c6c1bd09.pth',
         is_fix_cleaning=False,
         is_sequential_cleaning=False),
+    ema_config=dict(
+        type='ExponentialMovingAverage',
+        momentum=0.001,
+        interval=1),
     pixel_loss=dict(type='L1Loss', loss_weight=1.0, reduction='mean'),
     cleaning_loss=dict(type='L1Loss', loss_weight=1.0, reduction='mean'),
     is_use_sharpened_gt_in_pixel=True,
@@ -297,12 +301,6 @@ default_hooks = dict(
 
 custom_hooks = [
     dict(type='BasicVisualizationHook', interval=5),
-    dict(
-        type='ExponentialMovingAverageHook',
-        module_keys=('generator_ema'),
-        interval=1,
-        interp_cfg=dict(momentum=0.999),
-    )
 ]
 
 model_wrapper_cfg = dict(
